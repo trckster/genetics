@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Field extends JPanel {
-    private List<Rectangle> squares = new ArrayList<Rectangle>();
+    private List<Square> squares = new ArrayList<Square>();
 
     private int width;
     private int height;
@@ -21,13 +21,13 @@ public class Field extends JPanel {
     }
 
     private void generateCells() {
-        int step = this.squareSize + 1;
+        int step = this.squareSize + 2;
 
-        for (int x = 0; x < this.height; x += step) {
-            for (int y = 0; y < this.width; y += step) {
-                Rectangle rect = new Rectangle(x, y, this.squareSize, this.squareSize);
+        for (int x = 0; x < this.width; x += step) {
+            for (int y = 0; y < this.height; y += step) {
+                Square square = new Square(this.squareSize, x, y, Color.getHSBColor(x, y, x + y));
 
-                this.squares.add(rect);
+                this.squares.add(square);
             }
         }
     }
@@ -41,10 +41,11 @@ public class Field extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D graphics = (Graphics2D) g;
 
-        for (Rectangle rectangle: this.squares) {
-            g2.draw(rectangle);
+        graphics.fill(graphics.getClipBounds());
+        for (Square square: this.squares) {
+            square.drawVia(graphics);
         }
     }
 }

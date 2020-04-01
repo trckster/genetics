@@ -4,6 +4,7 @@ import com.Models.Field;
 import com.Models.Square;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,7 +12,7 @@ public class Main {
 
         fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Field field = new Field(500, 500, 10);
+        Field field = new Field(1500, 750, 15);
         fr.getContentPane().add(field);
 
         fr.pack();
