@@ -1,32 +1,17 @@
 package com.Models;
 
 import javax.swing.*;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 
-public class Square extends JPanel {
-    private int size;
+public class Square {
+    private int size, x, y;
 
-    Rectangle rectangle;
+    private Color color;
 
-    Square (int size, int x, int y) {
+    public Square(int size, int x, int y, Color color) {
         this.size = size;
-
-        this.rectangle = new Rectangle(x, y, this.size, this.size);
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(this.size, this.size);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        Graphics2D g2 = (Graphics2D) g;
-        g2.draw(this.rectangle);
+        this.x = x;
+        this.y = y;
+        this.color = color;
     }
 }
