@@ -1,11 +1,12 @@
 package com.Models;
 
 public class Mob {
-    private int x, y;
+    private int x, y, age;
 
     public Mob(int x, int y) {
         this.x = x;
         this.y = y;
+        this.age = (int) (Math.random() * 100);
     }
 
     public int getX() {
@@ -17,6 +18,12 @@ public class Mob {
     }
 
     public void act() {
-        this.x = (this.x + 1) % 45;
+        x = (x + 1) % 45;
+
+        age++;
+    }
+
+    public boolean isDead() {
+        return age > 100;
     }
 }

@@ -3,13 +3,14 @@ package com.Models;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Field extends JPanel {
     private Square[][] squares = new Square[200][200];
     private List<Mob> mobs = new ArrayList<>();
 
-
+    private int round;
     private int width;
     private int height;
     private int squareSize;
@@ -50,28 +51,38 @@ public class Field extends JPanel {
             for (int j = 0; j < 200; j++)
                 if (this.squares[i][j] != null)
                     this.squares[i][j].drawVia(graphics);
+
+        graphics.drawString("Round: " + this.round + ".", 100, 850);
     }
 
     public void spawnMob(Mob mob) {
-        int acolor = (int)(Math.random() * 255);
-        int bcolor = (int)(Math.random() * 255);
-        int ccolor = (int)(Math.random() * 255);
-
-        this.squares[mob.getY()][mob.getX()].setColor(new Color(acolor, bcolor, ccolor));
+        this.squares[mob.getY()][mob.getX()].setColor(Color.BLACK);
         this.mobs.add(mob);
+        this.repaint();
     }
 
     public void nextRound() {
-        for (Mob mob: this.mobs) {
+        for (Iterator<Mob> iterator = this.mobs.iterator(); iterator.hasNext();) {
+            Mob mob = iterator.next();
+
             Square oldSquare = this.squares[mob.getY()][mob.getX()];
 
             mob.act();
 
-            Square newSquare = this.squares[mob.getY()][mob.getX()];
+            if (mob.isDead())
+            {
+                iterator.remove();
+                oldSquare.setColor(Color.WHITE);
+            }
 
-            oldSquare.swapColors(newSquare);
+            oldSquare.swapColors(this.squares[mob.getY()][mob.getX()]);
 
             this.repaint();
         }
+        this.repaint();
+    }
+
+    public void setRound(int round) {
+        this.round = round;
     }
 }

@@ -8,6 +8,7 @@ import javax.swing.*;
 public class Simulation {
     private JFrame frame;
     private Field field;
+    private int round = 1;
 
     public Simulation(String name) {
         frame = new JFrame(name);
@@ -39,13 +40,10 @@ public class Simulation {
             Mob mob = new Mob(randomX, randomY);
 
             this.field.spawnMob(mob);
-            this.frame.repaint();
         }
     }
 
     private void startEvolution() {
-        int round = 1;
-
         while (round < 100000) {
             System.out.println("Round " + round + ".");
 
@@ -55,9 +53,10 @@ public class Simulation {
                 System.out.println("Smth that never happen");
             }
 
+            this.field.setRound(this.round);
             this.field.nextRound();
 
-            round += 1;
+            this.round += 1;
         }
     }
 }
