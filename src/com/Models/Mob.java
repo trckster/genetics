@@ -15,4 +15,8 @@ public class Mob {
     public int getY() {
         return y;
     }
+
+    public void act() {
+        this.x = (this.x + 1) % 45;
+    }
 }

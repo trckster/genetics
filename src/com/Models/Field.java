@@ -2,10 +2,13 @@ package com.Models;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Field extends JPanel {
     private Square[][] squares = new Square[200][200];
+    private List<Mob> mobs = new ArrayList<>();
+
 
     private int width;
     private int height;
@@ -55,5 +58,20 @@ public class Field extends JPanel {
         int ccolor = (int)(Math.random() * 255);
 
         this.squares[mob.getY()][mob.getX()].setColor(new Color(acolor, bcolor, ccolor));
+        this.mobs.add(mob);
+    }
+
+    public void nextRound() {
+        for (Mob mob: this.mobs) {
+            Square oldSquare = this.squares[mob.getY()][mob.getX()];
+
+            mob.act();
+
+            Square newSquare = this.squares[mob.getY()][mob.getX()];
+
+            oldSquare.swapColors(newSquare);
+
+            this.repaint();
+        }
     }
 }

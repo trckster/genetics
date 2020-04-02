@@ -33,4 +33,15 @@ public class Square {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void swapColors(Square square) {
+        Color temp = this.color;
+
+        this.color = square.color;
+        square.color = temp;
+    }
 }

@@ -4,7 +4,6 @@ import com.Models.Field;
 import com.Models.Mob;
 
 import javax.swing.*;
-import java.util.Random;
 
 public class Simulation {
     private JFrame frame;
@@ -28,9 +27,11 @@ public class Simulation {
 
     public void start() {
         this.spawnMobs();
+
+        this.startEvolution();
     }
 
-    public void spawnMobs() {
+    private void spawnMobs() {
         for (int i = 0; i < 15; i++) {
             int randomX = (int) (Math.random() * 40);
             int randomY = (int) (Math.random() * 40);
@@ -39,6 +40,24 @@ public class Simulation {
 
             this.field.spawnMob(mob);
             this.frame.repaint();
+        }
+    }
+
+    private void startEvolution() {
+        int round = 1;
+
+        while (round < 100000) {
+            System.out.println("Round " + round + ".");
+
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                System.out.println("Smth that never happen");
+            }
+
+            this.field.nextRound();
+
+            round += 1;
         }
     }
 }
