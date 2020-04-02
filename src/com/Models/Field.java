@@ -2,11 +2,10 @@ package com.Models;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Random;
 
 public class Field extends JPanel {
-    private List<Square> squares = new ArrayList<Square>();
+    private Square[][] squares = new Square[200][200];
 
     private int width;
     private int height;
@@ -25,9 +24,9 @@ public class Field extends JPanel {
 
         for (int x = 0; x < this.width; x += step) {
             for (int y = 0; y < this.height; y += step) {
-                Square square = new Square(this.squareSize, x, y, Color.getHSBColor(x, y, x + y));
+                Square square = new Square(this.squareSize, x, y, Color.white);
 
-                this.squares.add(square);
+                this.squares[x / step][y / step] = square;
             }
         }
     }
@@ -44,8 +43,17 @@ public class Field extends JPanel {
         Graphics2D graphics = (Graphics2D) g;
 
         graphics.fill(graphics.getClipBounds());
-        for (Square square: this.squares) {
-            square.drawVia(graphics);
-        }
+        for (int i = 0; i < 200; i++)
+            for (int j = 0; j < 200; j++)
+                if (this.squares[i][j] != null)
+                    this.squares[i][j].drawVia(graphics);
+    }
+
+    public void spawnMob(Mob mob) {
+        int acolor = (int)(Math.random() * 255);
+        int bcolor = (int)(Math.random() * 255);
+        int ccolor = (int)(Math.random() * 255);
+
+        this.squares[mob.getY()][mob.getX()].setColor(new Color(acolor, bcolor, ccolor));
     }
 }

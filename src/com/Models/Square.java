@@ -29,4 +29,8 @@ public class Square {
         graphics.setPaint(this.color);
         graphics.fill(this.getAsRectangle());
     }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }
