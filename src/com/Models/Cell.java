@@ -71,7 +71,7 @@ public class Cell {
         return this.state != CellState.EMPTY;
     }
 
-    public boolean isEmpty() {
-        return this.state == CellState.EMPTY;
+    public boolean containsMob() {
+        return this.state == CellState.MOB;
     }
 }

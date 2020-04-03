@@ -1,7 +1,5 @@
 package com.Models;
 
-import com.Helpers.RandomGenerator;
-
 public class Food {
     private int x, y;
 

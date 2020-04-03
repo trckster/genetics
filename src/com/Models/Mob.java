@@ -7,11 +7,14 @@ public class Mob {
 
     private Field field;
 
+    private Brain brain;
+
     public Mob(int x, int y, Field field) {
         this.x = x;
         this.y = y;
         this.age = RandomGenerator.nextInt(1);
         this.field = field;
+        this.brain = new Brain(this);
     }
 
     public int getX() {
@@ -23,33 +26,40 @@ public class Mob {
     }
 
     public void act() {
-        if (canMoveLeft())
-            moveLeft();
+        brain.processAction();
 
         age++;
     }
 
-    public boolean canMoveLeft() {
+    public boolean canMove(int newX, int newY) {
+        if (newY < 0 && newY >= field.getCellsHeight())
+            return false;
+
+        return field.getCell(newX, newY).containsMob();
+    }
+
+    public void moveUp() {
+        if (canMove(x, y - 1))
+            y--;
+    }
+    public void moveDown() {
+        if (canMove(x, y + 1))
+            y++;
+    }
+    public void moveRight() {
+        int newX = (x + 1) % field.getCellsWidth();
+
+        if (canMove(newX, y))
+            x = newX;
+    }
+    public void moveLeft() {
         int newX = x - 1;
 
         if (newX < 0)
             newX += field.getCellsWidth();
 
-        return field.getCell(newX, y).isEmpty();
-    }
-
-    public void moveUp() {
-        y++;
-    }
-    public void moveDown() {
-        y--;
-    }
-    public void moveRight() {
-        x = (x + 1) % field.getCellsWidth();
-    }
-    public void moveLeft() {
-        if (--x < 0)
-            x += field.getCellsWidth();
+        if (canMove(newX, y))
+            x = newX;
     }
 
     public boolean isDead() {
