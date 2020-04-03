@@ -37,7 +37,7 @@ public class Simulation {
             int randomX = (int) (Math.random() * 40);
             int randomY = (int) (Math.random() * 40);
 
-            Mob mob = new Mob(randomX, randomY);
+            Mob mob = new Mob(randomX, randomY, this.field);
 
             this.field.spawnMob(mob);
         }
@@ -48,7 +48,7 @@ public class Simulation {
             System.out.println("Round " + round + ".");
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (Exception e) {
                 System.out.println("Smth that never happen");
             }

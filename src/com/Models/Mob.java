@@ -3,10 +3,13 @@ package com.Models;
 public class Mob {
     private int x, y, age;
 
-    public Mob(int x, int y) {
+    private Field field;
+
+    public Mob(int x, int y, Field field) {
         this.x = x;
         this.y = y;
         this.age = (int) (Math.random() * 100);
+        this.field = field;
     }
 
     public int getX() {
@@ -18,7 +21,7 @@ public class Mob {
     }
 
     public void act() {
-        x = (x + 1) % 45;
+        x = (x + 1) % field.getCellsHeight();
 
         age++;
     }

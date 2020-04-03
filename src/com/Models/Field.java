@@ -1,5 +1,7 @@
 package com.Models;
 
+import com.Enums.CellState;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,37 +9,44 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Field extends JPanel {
-    private Square[][] squares = new Square[200][200];
+    private Cell[][] cells = new Cell[200][200];
     private List<Mob> mobs = new ArrayList<>();
 
     private int round;
-    private int width;
-    private int height;
+    private int widthInPixels;
+    private int heightInPixels;
+    private int squareWithBorderSize;
     private int squareSize;
 
-    public Field(int width, int height, int squareSize) {
-        this.width = width;
-        this.height = height;
+    private int width;
+    private int height;
+
+    public Field(int widthInPixels, int heightInPixels, int squareSize) {
+        this.widthInPixels = widthInPixels;
+        this.heightInPixels = heightInPixels;
         this.squareSize = squareSize;
+
+        this.squareWithBorderSize = squareSize + 2;
+
+        this.width = widthInPixels / this.squareWithBorderSize;
+        this.height = heightInPixels / this.squareWithBorderSize;
 
         this.generateCells();
     }
 
     private void generateCells() {
-        int step = this.squareSize + 2;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell cell = new Cell(squareSize, x * squareWithBorderSize, y * squareWithBorderSize);
 
-        for (int x = 0; x < this.width; x += step) {
-            for (int y = 0; y < this.height; y += step) {
-                Square square = new Square(this.squareSize, x, y, Color.white);
-
-                this.squares[x / step][y / step] = square;
+                this.cells[x][y] = cell;
             }
         }
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(this.width, this.height);
+        return new Dimension(this.widthInPixels, this.heightInPixels);
     }
 
     @Override
@@ -47,35 +56,34 @@ public class Field extends JPanel {
         Graphics2D graphics = (Graphics2D) g;
 
         graphics.fill(graphics.getClipBounds());
-        for (int i = 0; i < 200; i++)
-            for (int j = 0; j < 200; j++)
-                if (this.squares[i][j] != null)
-                    this.squares[i][j].drawVia(graphics);
+
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                this.cells[i][j].drawVia(graphics);
 
         graphics.drawString("Round: " + this.round + ".", 100, 850);
     }
 
     public void spawnMob(Mob mob) {
-        this.squares[mob.getY()][mob.getX()].setColor(Color.BLACK);
+        this.cells[mob.getY()][mob.getX()].setState(CellState.MOB);
         this.mobs.add(mob);
         this.repaint();
     }
 
     public void nextRound() {
-        for (Iterator<Mob> iterator = this.mobs.iterator(); iterator.hasNext();) {
+        for (Iterator<Mob> iterator = this.mobs.iterator(); iterator.hasNext(); ) {
             Mob mob = iterator.next();
 
-            Square oldSquare = this.squares[mob.getY()][mob.getX()];
+            Cell oldCell = this.cells[mob.getY()][mob.getX()];
 
             mob.act();
 
-            if (mob.isDead())
-            {
+            if (mob.isDead()) {
                 iterator.remove();
-                oldSquare.setColor(Color.WHITE);
+                oldCell.setEmpty();
             }
 
-            oldSquare.swapColors(this.squares[mob.getY()][mob.getX()]);
+            oldCell.swapStates(this.cells[mob.getY()][mob.getX()]);
 
             this.repaint();
         }
@@ -84,5 +92,9 @@ public class Field extends JPanel {
 
     public void setRound(int round) {
         this.round = round;
+    }
+
+    public int getCellsHeight() {
+        return height;
     }
 }
