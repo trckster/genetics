@@ -14,6 +14,7 @@ public class Field extends JPanel {
 
     private Cell[][] cells = new Cell[maxCellsCount][maxCellsCount];
     private List<Mob> mobs = new ArrayList<>();
+    private List<Food> food = new ArrayList<>();
 
     private int round;
     private int widthInPixels;
@@ -38,7 +39,6 @@ public class Field extends JPanel {
     }
 
     private void generateCells() {
-        System.out.println("Generating cells for y: " + height + ", x: " + width);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Cell cell = new Cell(
@@ -96,13 +96,20 @@ public class Field extends JPanel {
         this.repaint();
     }
 
+    public void spawnRandomFood() {
+        Cell cell = this.getRandomEmptyCell();
+
+        Food food = cell.spawnFood();
+
+        this.food.add(food);
+        this.repaint();
+    }
+
     public void nextRound() {
         for (Iterator<Mob> iterator = this.mobs.iterator(); iterator.hasNext(); ) {
             Mob mob = iterator.next();
 
             Cell oldCell = this.cells[mob.getX()][mob.getY()];
-
-            System.out.println("Old: " + mob.getY() + " " + mob.getX());
 
             mob.act();
 
@@ -111,14 +118,7 @@ public class Field extends JPanel {
                 oldCell.setEmpty();
             }
 
-            System.out.println("New: " + mob.getY() + " " + mob.getX());
             Cell newCell = this.cells[mob.getX()][mob.getY()];
-
-            if (oldCell == null)
-                System.out.println("Old cell is null");
-
-            if (newCell == null)
-                System.out.println("New cell is null");
 
             oldCell.swapStates(newCell);
 
@@ -137,5 +137,9 @@ public class Field extends JPanel {
 
     public int getCellsWidth() {
         return width;
+    }
+
+    public Cell getCell(int x, int y) {
+        return cells[x][y];
     }
 }

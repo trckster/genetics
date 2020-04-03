@@ -29,6 +29,7 @@ public class Simulation {
 
     public void start() {
         this.spawnMobs();
+        this.spawnFood();
 
         this.startEvolution();
     }
@@ -36,6 +37,12 @@ public class Simulation {
     private void spawnMobs() {
         for (int i = 0; i < 15; i++) {
             this.field.spawnRandomMob();
+        }
+    }
+
+    private void spawnFood() {
+        for (int i = 0; i < 400; i++) {
+            this.field.spawnRandomFood();
         }
     }
 
