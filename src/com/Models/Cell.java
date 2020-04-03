@@ -1,25 +1,31 @@
 package com.Models;
 
 import com.Enums.CellState;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.awt.*;
 
 public class Cell {
-    private int size, x, y;
+    private int size, pixelX, pixelY;
+    private int x ,y;
 
     private CellState state;
 
-    public Cell(int size, int x, int y) {
+    private Field field;
+
+    public Cell(int size, int pixelX, int pixelY, int x, int y, Field field) {
         this.size = size;
+        this.pixelX = pixelX;
+        this.pixelY = pixelY;
+
         this.x = x;
         this.y = y;
 
         this.state = CellState.EMPTY;
+        this.field = field;
     }
 
     private Rectangle getAsRectangle() {
-        return new Rectangle(this.x, this.y, this.size, this.size);
+        return new Rectangle(this.pixelX, this.pixelY, this.size, this.size);
     }
 
     public void drawVia(Graphics2D graphics) {
@@ -49,7 +55,13 @@ public class Cell {
         this.state = CellState.EMPTY;
     }
 
-    public void setState(CellState state) {
-        this.state = state;
+    public Mob spawnMob() {
+        this.state = CellState.MOB;
+
+        return new Mob(this.x, this.y, this.field);
+    }
+
+    public boolean isNotEmpty() {
+        return this.state != CellState.EMPTY;
     }
 }

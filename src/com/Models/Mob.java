@@ -1,5 +1,7 @@
 package com.Models;
 
+import com.Helpers.RandomGenerator;
+
 public class Mob {
     private int x, y, age;
 
@@ -8,7 +10,7 @@ public class Mob {
     public Mob(int x, int y, Field field) {
         this.x = x;
         this.y = y;
-        this.age = (int) (Math.random() * 100);
+        this.age = RandomGenerator.nextInt(100);
         this.field = field;
     }
 
@@ -21,7 +23,7 @@ public class Mob {
     }
 
     public void act() {
-        x = (x + 1) % field.getCellsHeight();
+        x = (x + 1) % field.getCellsWidth();
 
         age++;
     }

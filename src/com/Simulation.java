@@ -1,5 +1,6 @@
 package com;
 
+import com.Models.Cell;
 import com.Models.Field;
 import com.Models.Mob;
 
@@ -34,12 +35,7 @@ public class Simulation {
 
     private void spawnMobs() {
         for (int i = 0; i < 15; i++) {
-            int randomX = (int) (Math.random() * 40);
-            int randomY = (int) (Math.random() * 40);
-
-            Mob mob = new Mob(randomX, randomY, this.field);
-
-            this.field.spawnMob(mob);
+            this.field.spawnRandomMob();
         }
     }
 
