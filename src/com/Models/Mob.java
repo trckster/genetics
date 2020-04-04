@@ -50,16 +50,19 @@ public class Mob {
         if (canMove(x, y - 1))
             y--;
     }
+
     public void moveDown() {
         if (canMove(x, y + 1))
             y++;
     }
+
     public void moveRight() {
         int newX = (x + 1) % field.getCellsWidth();
 
         if (canMove(newX, y))
             x = newX;
     }
+
     public void moveLeft() {
         int newX = x - 1;
 
@@ -68,6 +71,48 @@ public class Mob {
 
         if (canMove(newX, y))
             x = newX;
+    }
+
+    public void moveRightUp() {
+        int newX = (x + 1) % field.getCellsWidth();
+
+        if (canMove(newX, y - 1)) {
+            x = newX;
+            y--;
+        }
+    }
+
+    public void moveLeftUp() {
+        int newX = x - 1;
+
+        if (newX < 0)
+            newX += field.getCellsWidth();
+
+        if (canMove(newX, y - 1)) {
+            x = newX;
+            y--;
+        }
+    }
+
+    public void moveRightDown() {
+        int newX = (x + 1) % field.getCellsWidth();
+
+        if (canMove(newX, y + 1)) {
+            x = newX;
+            y++;
+        }
+    }
+
+    public void moveLeftDown() {
+        int newX = x - 1;
+
+        if (newX < 0)
+            newX += field.getCellsWidth();
+
+        if (canMove(newX, y + 1)) {
+            x = newX;
+            y++;
+        }
     }
 
     public boolean isDead() {

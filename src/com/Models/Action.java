@@ -1,15 +1,17 @@
 package com.Models;
 
+import com.Enums.ActionSignature;
+
 public class Action {
-    private String name;
+    private ActionSignature name;
     private int jump;
 
-    public Action(String name, int jump) {
+    public Action(ActionSignature name, int jump) {
         this.name = name;
         this.jump = jump;
     }
 
-    public String getName() {
+    public ActionSignature getName() {
         return name;
     }
 

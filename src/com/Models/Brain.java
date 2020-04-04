@@ -1,28 +1,20 @@
 package com.Models;
 
+import com.Enums.ActionSignature;
 import com.Helpers.RandomGenerator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Brain {
-    private static int initialAction = 4;
+    private static int initialAction = 8;
     private int currentAction;
 
     private Mob mob;
 
     public List<Action> commands = new ArrayList<>();
 
-    public List<String> commandsNames = Arrays.asList(
-            "moveUp",
-            "moveDown",
-            "moveRight",
-            "moveLeft",
-            "sleep"
-    );
-
     public Brain(Mob mob) {
-        for (String commandName: commandsNames) {
+        for (ActionSignature commandName: ActionSignature.values()) {
             commands.add(new Action(commandName, this.randomJump()));
         }
 
@@ -34,17 +26,29 @@ public class Brain {
         Action action = commands.get(currentAction);
 
         switch (action.getName()) {
-            case "moveUp":
+            case moveUp:
                 mob.moveUp();
                 break;
-            case "moveDown":
+            case moveDown:
                 mob.moveDown();
                 break;
-            case "moveRight":
+            case moveRight:
                 mob.moveRight();
                 break;
-            case "moveLeft":
+            case moveLeft:
                 mob.moveLeft();
+                break;
+            case moveRightUp:
+                mob.moveRightUp();
+                break;
+            case moveLeftUp:
+                mob.moveLeftUp();
+                break;
+            case moveRightDown:
+                mob.moveRightDown();
+                break;
+            case moveLeftDown:
+                mob.moveLeftDown();
                 break;
         }
 
@@ -58,7 +62,7 @@ public class Brain {
     }
 
     public int randomJump() {
-        return RandomGenerator.nextInt(commandsNames.size());
+        return RandomGenerator.nextInt(ActionSignature.values().length);
     }
 
     protected Brain cloneBrain(Mob mob) {
