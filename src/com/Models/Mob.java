@@ -1,7 +1,7 @@
 package com.Models;
 
 public class Mob {
-    private int x, y, lifeTime;
+    private int x, y, lifeTime, age;
 
     private Field field;
 
@@ -13,6 +13,7 @@ public class Mob {
         this.lifeTime = 100;
         this.field = field;
         this.brain = new Brain(this);
+        this.age = 0;
     }
 
     public int getX() {
@@ -27,6 +28,10 @@ public class Mob {
         brain.processAction();
 
         lifeTime--;
+        age++;
+
+        if (age % 20 == 0)
+            produceOffspring();
     }
 
     public boolean canMove(int newX, int newY) {
@@ -66,5 +71,25 @@ public class Mob {
 
     public void bumpLongevity() {
         lifeTime += 10;
+    }
+
+    private void produceOffspring() {
+        Cell cell = field.getRandomEmptyCellNear(x, y);
+
+        if (cell == null)
+            return;
+
+        Mob child = copyMob(cell);
+        field.addMob(child);
+    }
+
+    private Mob copyMob(Cell cell) {
+        Mob newMob = new Mob(cell.getX(), cell.getY(), field);
+
+        newMob.brain = this.brain.cloneBrain(newMob);
+
+        cell.putMob();
+
+        return newMob;
     }
 }

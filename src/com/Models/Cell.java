@@ -79,7 +79,19 @@ public class Cell {
         return this.state == CellState.MOB;
     }
 
+    public boolean isEmpty() {
+        return this.state == CellState.EMPTY;
+    }
+
     public boolean isFood() {
         return this.state == CellState.FOOD;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }

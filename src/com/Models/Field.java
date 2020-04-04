@@ -13,6 +13,7 @@ public class Field extends JPanel {
 
     private Cell[][] cells = new Cell[maxCellsCount][maxCellsCount];
     private List<Mob> mobs = new ArrayList<>();
+    private List<Mob> kids = new ArrayList<>();
     private List<Food> food = new ArrayList<>();
 
     private int round;
@@ -130,6 +131,8 @@ public class Field extends JPanel {
             repaint();
         }
 
+        addAllKidsToMobs();
+
         repaint();
     }
 
@@ -147,5 +150,52 @@ public class Field extends JPanel {
 
     public Cell getCell(int x, int y) {
         return cells[x][y];
+    }
+
+    public void addMob(Mob mob) {
+        this.kids.add(mob);
+    }
+
+    public Cell getRandomEmptyCellNear(int x, int y) {
+        List<Cell> nearCells = getNearCells(x, y);
+
+        List<Cell> availableCells = new ArrayList<>();
+
+        for (Cell cell: nearCells) {
+            if (cell.isEmpty())
+                availableCells.add(cell);
+        }
+
+        if (availableCells.size() == 0)
+            return null;
+
+        int randomCellIndex = RandomGenerator.nextInt(availableCells.size());
+
+        return availableCells.get(randomCellIndex);
+    }
+
+    public List<Cell> getNearCells(int x, int y) {
+        List<Cell> cells = new ArrayList<>();
+
+        if (cellExists(x, y - 1)) cells.add(this.cells[x][y - 1]);
+        if (cellExists(x + 1, y - 1)) cells.add(this.cells[x + 1][y - 1]);
+        if (cellExists(x + 1, y)) cells.add(this.cells[x + 1][y]);
+        if (cellExists(x + 1, y + 1)) cells.add(this.cells[x + 1][y + 1]);
+        if (cellExists(x, y + 1)) cells.add(this.cells[x][y + 1]);
+        if (cellExists(x - 1, y + 1)) cells.add(this.cells[x - 1][y + 1]);
+        if (cellExists(x - 1, y)) cells.add(this.cells[x - 1][y]);
+        if (cellExists(x - 1, y - 1)) cells.add(this.cells[x - 1][y - 1]);
+
+        return cells;
+    }
+
+    public boolean cellExists(int x, int y) {
+        return x < getCellsWidth() && x >= 0 && y < getCellsHeight() && y >= 0;
+    }
+
+    public void addAllKidsToMobs() {
+        mobs.addAll(kids);
+
+        kids.removeAll(kids);
     }
 }

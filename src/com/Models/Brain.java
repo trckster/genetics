@@ -60,4 +60,16 @@ public class Brain {
     public int randomJump() {
         return RandomGenerator.nextInt(commandsNames.size());
     }
+
+    protected Brain cloneBrain(Mob mob) {
+        Brain newBrain = new Brain(mob);
+
+        newBrain.currentAction = this.currentAction;
+        newBrain.commands = new ArrayList<>();
+
+        for (Action action: this.commands)
+            newBrain.commands.add(action.cloneAction());
+
+        return newBrain;
+    }
 }

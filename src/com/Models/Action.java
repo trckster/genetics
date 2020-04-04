@@ -16,4 +16,8 @@ public class Action {
     public int getJump() {
         return jump;
     }
+
+    public Action cloneAction() {
+        return new Action(this.name, this.jump);
+    }
 }
