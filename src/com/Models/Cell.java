@@ -61,10 +61,8 @@ public class Cell {
         return new Mob(this.x, this.y, this.field);
     }
 
-    public Food spawnFood() {
+    public void spawnFood() {
         this.state = CellState.FOOD;
-
-        return new Food(this.x, this.y, this.field);
     }
 
     public void putMob() {

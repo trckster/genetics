@@ -1,19 +1,19 @@
 package com;
 
-import com.Models.Cell;
 import com.Models.Field;
-import com.Models.Mob;
 
 import javax.swing.*;
 
 public class Simulation {
+    private int sleepTimeBetweenRounds = 10;
+
     private JFrame frame;
     private Field field;
     private int round = 1;
 
     public Simulation(String name) {
         frame = new JFrame(name);
-        this.field = new Field(1500, 750, 15);
+        this.field = new Field(1920, 800, 5);
     }
 
     public void initialize() {
@@ -29,7 +29,7 @@ public class Simulation {
 
     public void start() {
         this.spawnMobs();
-        this.spawnFood();
+        this.field.spawnFood();
 
         this.startEvolution();
     }
@@ -40,18 +40,12 @@ public class Simulation {
         }
     }
 
-    private void spawnFood() {
-        for (int i = 0; i < 400; i++) {
-            this.field.spawnRandomFood();
-        }
-    }
-
     private void startEvolution() {
         while (round < 10000000) {
             System.out.println("Round " + round + ".");
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(sleepTimeBetweenRounds);
             } catch (Exception e) {
                 System.out.println("Smth that never happen");
             }

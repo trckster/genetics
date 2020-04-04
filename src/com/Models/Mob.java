@@ -4,9 +4,9 @@ import com.Helpers.RandomGenerator;
 
 public class Mob {
     /** Static */
-    private static int startingLifeTime = 15;
-    private static int lifeTimeBonus = 15;
-    private static int breedingFrequency = 20;
+    private static int startingLifeTime = 49;
+    private static int lifeTimeBonus = 21;
+    private static int breedingFrequency = 61;
     private static double mutationProbability = 0.25;
 
     private int x, y, lifeTime, age;

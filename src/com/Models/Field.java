@@ -9,12 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Field extends JPanel {
-    public static int maxCellsCount = 200;
+    private static int maxCellsCount = 20000;
+    private static int borderWidth = 1;
 
     private Cell[][] cells = new Cell[maxCellsCount][maxCellsCount];
     private List<Mob> mobs = new ArrayList<>();
     private List<Mob> kids = new ArrayList<>();
-    private List<Food> food = new ArrayList<>();
+    private int foodCount;
 
     private int round;
     private int widthInPixels;
@@ -25,12 +26,14 @@ public class Field extends JPanel {
     private int width;
     private int height;
 
+    private int mobsMaxCount = 0, foodMaxCount = 0;
+
     public Field(int widthInPixels, int heightInPixels, int squareSize) {
         this.widthInPixels = widthInPixels;
         this.heightInPixels = heightInPixels;
         this.squareSize = squareSize;
 
-        this.squareWithBorderSize = squareSize + 1;
+        this.squareWithBorderSize = squareSize + borderWidth;
 
         this.width = (widthInPixels - squareSize) / this.squareWithBorderSize + 1;
         this.height = (heightInPixels - squareSize) / this.squareWithBorderSize + 1;
@@ -84,8 +87,16 @@ public class Field extends JPanel {
             for (int j = 0; j < height; j++)
                 this.cells[i][j].drawVia(graphics);
 
+        displayInformationVia(graphics);
+    }
+
+    private void displayInformationVia(Graphics2D graphics) {
         graphics.drawString("Round: " + this.round + ".", 100, 850);
-        graphics.drawString("Mobs count: " + this.mobs.size() + ".", 100, 900);
+        graphics.drawString("Mobs count: " + this.mobs.size() + ".", 100, 875);
+        graphics.drawString("Food count: " + this.foodCount + ".", 100, 900);
+
+        graphics.drawString("Max mobs count: " + this.mobsMaxCount + ".", 300, 875);
+        graphics.drawString("Max food count: " + this.foodMaxCount + ".", 300, 900);
     }
 
     public void spawnRandomMob() {
@@ -97,12 +108,21 @@ public class Field extends JPanel {
         this.repaint();
     }
 
+    public void spawnFood() {
+        int cellsCount = getEmptyCellsCount();
+
+        while (foodCount < (cellsCount / 10)) {
+            this.spawnRandomFood();
+            cellsCount -= 1;
+        }
+    }
+
     public void spawnRandomFood() {
         Cell cell = this.getRandomEmptyCell();
 
-        Food food = cell.spawnFood();
+        cell.spawnFood();
 
-        this.food.add(food);
+        foodCount += 1;
         this.repaint();
     }
 
@@ -117,9 +137,13 @@ public class Field extends JPanel {
             Cell newCell = cells[mob.getX()][mob.getY()];
 
             if (newCell.isFood()) {
+                foodCount -= 1;
+
                 oldCell.setEmpty();
                 newCell.putMob();
                 mob.bumpLongevity();
+
+                this.spawnFood();
             } else {
                 if (mob.isDead()) {
                     iterator.remove();
@@ -135,7 +159,17 @@ public class Field extends JPanel {
 
         addAllKidsToMobs();
 
+        refreshMaxCounts();
+
         repaint();
+    }
+
+    private void refreshMaxCounts() {
+        if (foodMaxCount < foodCount)
+            foodMaxCount = foodCount;
+
+        if (mobsMaxCount < mobs.size())
+            mobsMaxCount = mobs.size();
     }
 
     public void setRound(int round) {
@@ -198,6 +232,19 @@ public class Field extends JPanel {
     public void addAllKidsToMobs() {
         mobs.addAll(kids);
 
-        kids.removeAll(kids);
+        kids.clear();
+    }
+
+    public int getEmptyCellsCount() {
+        int emptyCells = 0;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (this.cells[x][y].isEmpty())
+                    emptyCells++;
+            }
+        }
+
+        return emptyCells;
     }
 }
