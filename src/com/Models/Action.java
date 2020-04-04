@@ -19,6 +19,10 @@ public class Action {
         return jump;
     }
 
+    public void setJump(int jump) {
+        this.jump = jump;
+    }
+
     public Action cloneAction() {
         return new Action(this.name, this.jump);
     }

@@ -62,7 +62,7 @@ public class Brain {
     }
 
     public int randomJump() {
-        return RandomGenerator.nextInt(ActionSignature.values().length);
+        return RandomGenerator.nextInt(actionsCount());
     }
 
     protected Brain cloneBrain(Mob mob) {
@@ -75,5 +75,17 @@ public class Brain {
             newBrain.commands.add(action.cloneAction());
 
         return newBrain;
+    }
+
+    public int actionsCount() {
+        return ActionSignature.values().length;
+    }
+
+    protected void mutate() {
+        int randomActionIndex = RandomGenerator.nextInt(actionsCount());
+
+        Action action = this.commands.get(randomActionIndex);
+
+        action.setJump(randomJump());
     }
 }

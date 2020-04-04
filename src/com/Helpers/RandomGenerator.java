@@ -16,4 +16,10 @@ public class RandomGenerator {
 
         return instance.nextInt(to - from + 1) + from;
     }
+
+    public static boolean betOn(double probability) {
+        double gameResult = Math.random();
+
+        return gameResult < probability;
+    }
 }
