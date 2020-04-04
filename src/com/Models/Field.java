@@ -105,10 +105,10 @@ public class Field extends JPanel {
     }
 
     public void nextRound() {
-        for (Iterator<Mob> iterator = this.mobs.iterator(); iterator.hasNext(); ) {
+        for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
             Mob mob = iterator.next();
 
-            Cell oldCell = this.cells[mob.getX()][mob.getY()];
+            Cell oldCell = cells[mob.getX()][mob.getY()];
 
             mob.act();
 
@@ -117,13 +117,20 @@ public class Field extends JPanel {
                 oldCell.setEmpty();
             }
 
-            Cell newCell = this.cells[mob.getX()][mob.getY()];
+            Cell newCell = cells[mob.getX()][mob.getY()];
 
-            oldCell.swapStates(newCell);
+            if (newCell.isFood()) {
+                oldCell.setEmpty();
+                newCell.putMob();
+                
+            } else {
+                oldCell.swapStates(newCell);
+            }
 
-            this.repaint();
+            repaint();
         }
-        this.repaint();
+
+        repaint();
     }
 
     public void setRound(int round) {

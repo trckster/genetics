@@ -32,10 +32,10 @@ public class Mob {
     }
 
     public boolean canMove(int newX, int newY) {
-        if (newY < 0 && newY >= field.getCellsHeight())
+        if (newY < 0 || newY >= field.getCellsHeight())
             return false;
 
-        return field.getCell(newX, newY).containsMob();
+        return !field.getCell(newX, newY).containsMob();
     }
 
     public void moveUp() {

@@ -56,7 +56,7 @@ public class Cell {
     }
 
     public Mob spawnMob() {
-        this.state = CellState.MOB;
+        this.putMob();
 
         return new Mob(this.x, this.y, this.field);
     }
@@ -67,11 +67,19 @@ public class Cell {
         return new Food(this.x, this.y, this.field);
     }
 
+    public void putMob() {
+        this.state = CellState.MOB;
+    }
+
     public boolean isNotEmpty() {
         return this.state != CellState.EMPTY;
     }
 
     public boolean containsMob() {
         return this.state == CellState.MOB;
+    }
+
+    public boolean isFood() {
+        return this.state == CellState.FOOD;
     }
 }

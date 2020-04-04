@@ -23,7 +23,7 @@ public class Brain {
 
     public Brain(Mob mob) {
         for (String commandName: commandsNames) {
-            commands.add(new Action(commandName, 1));
+            commands.add(new Action(commandName, this.randomJump()));
         }
 
         this.mob = mob;
@@ -55,5 +55,9 @@ public class Brain {
         currentAction += jump;
 
         currentAction %= commands.size();
+    }
+
+    public int randomJump() {
+        return RandomGenerator.nextInt(commandsNames.size());
     }
 }
