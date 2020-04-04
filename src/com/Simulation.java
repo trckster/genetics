@@ -47,11 +47,11 @@ public class Simulation {
     }
 
     private void startEvolution() {
-        while (round < 100000) {
+        while (round < 10000000) {
             System.out.println("Round " + round + ".");
 
             try {
-                Thread.sleep(200);
+                Thread.sleep(100);
             } catch (Exception e) {
                 System.out.println("Smth that never happen");
             }

@@ -30,7 +30,7 @@ public class Field extends JPanel {
         this.heightInPixels = heightInPixels;
         this.squareSize = squareSize;
 
-        this.squareWithBorderSize = squareSize + 2;
+        this.squareWithBorderSize = squareSize + 1;
 
         this.width = (widthInPixels - squareSize) / this.squareWithBorderSize + 1;
         this.height = (heightInPixels - squareSize) / this.squareWithBorderSize + 1;
@@ -85,6 +85,7 @@ public class Field extends JPanel {
                 this.cells[i][j].drawVia(graphics);
 
         graphics.drawString("Round: " + this.round + ".", 100, 850);
+        graphics.drawString("Mobs count: " + this.mobs.size() + ".", 100, 900);
     }
 
     public void spawnRandomMob() {
@@ -113,11 +114,6 @@ public class Field extends JPanel {
 
             mob.act();
 
-            if (mob.isDead()) {
-                iterator.remove();
-                oldCell.setEmpty();
-            }
-
             Cell newCell = cells[mob.getX()][mob.getY()];
 
             if (newCell.isFood()) {
@@ -125,10 +121,16 @@ public class Field extends JPanel {
                 newCell.putMob();
                 mob.bumpLongevity();
             } else {
+                if (mob.isDead()) {
+                    iterator.remove();
+                    oldCell.setEmpty();
+                }
+
                 oldCell.swapStates(newCell);
             }
 
             repaint();
+
         }
 
         addAllKidsToMobs();

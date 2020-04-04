@@ -1,6 +1,11 @@
 package com.Models;
 
 public class Mob {
+    /** Static */
+    private static int startingLifeTime = 15;
+    private static int lifeTimeBonus = 15;
+    private static int breedingFrequency = 20;
+
     private int x, y, lifeTime, age;
 
     private Field field;
@@ -10,7 +15,7 @@ public class Mob {
     public Mob(int x, int y, Field field) {
         this.x = x;
         this.y = y;
-        this.lifeTime = 100;
+        this.lifeTime = startingLifeTime;
         this.field = field;
         this.brain = new Brain(this);
         this.age = 0;
@@ -30,7 +35,7 @@ public class Mob {
         lifeTime--;
         age++;
 
-        if (age % 20 == 0)
+        if (age % breedingFrequency == 0)
             produceOffspring();
     }
 
@@ -70,7 +75,7 @@ public class Mob {
     }
 
     public void bumpLongevity() {
-        lifeTime += 10;
+        lifeTime += lifeTimeBonus;
     }
 
     private void produceOffspring() {
