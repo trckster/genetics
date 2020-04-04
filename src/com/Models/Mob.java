@@ -1,9 +1,7 @@
 package com.Models;
 
-import com.Helpers.RandomGenerator;
-
 public class Mob {
-    private int x, y, age;
+    private int x, y, lifeTime;
 
     private Field field;
 
@@ -12,7 +10,7 @@ public class Mob {
     public Mob(int x, int y, Field field) {
         this.x = x;
         this.y = y;
-        this.age = RandomGenerator.nextInt(1);
+        this.lifeTime = 100;
         this.field = field;
         this.brain = new Brain(this);
     }
@@ -28,7 +26,7 @@ public class Mob {
     public void act() {
         brain.processAction();
 
-        age++;
+        lifeTime--;
     }
 
     public boolean canMove(int newX, int newY) {
@@ -63,6 +61,10 @@ public class Mob {
     }
 
     public boolean isDead() {
-        return age > 100;
+        return lifeTime < 0;
+    }
+
+    public void bumpLongevity() {
+        lifeTime += 10;
     }
 }

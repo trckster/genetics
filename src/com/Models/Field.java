@@ -122,7 +122,7 @@ public class Field extends JPanel {
             if (newCell.isFood()) {
                 oldCell.setEmpty();
                 newCell.putMob();
-                
+                mob.bumpLongevity();
             } else {
                 oldCell.swapStates(newCell);
             }
